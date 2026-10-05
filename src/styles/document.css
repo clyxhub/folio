@@ -1,0 +1,1506 @@
+/* ==========================================================================
+   Folio — portfolio document
+   Base classes are neutral; templates in src/templates/index.js layer on their
+   character through `templateCSS`. Recreated from Canva's real genre language.
+   ========================================================================== */
+
+.folio-doc {
+  --page-pad: 48px;
+  --frame-radius: 2px;
+  --cover-size: 40px;
+  --tagline-size: 15px;
+  --body-size: 14px;
+  --space: 56px;
+  font-family: var(--body-font, "Inter", sans-serif);
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.folio-doc .pf-page {
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  padding: var(--page-pad);
+  max-width: 760px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* ---------- generic ---------- */
+
+.folio-doc .pf-section-head,
+.folio-doc .pf-divider {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 13px 0;
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+}
+
+.folio-doc .pf-section-head {
+  margin: 0 0 20px;
+}
+
+.folio-doc .pf-divider {
+  margin: 28px 0 0;
+}
+
+.folio-doc .pf-coverpage .pf-divider {
+  align-self: stretch;
+}
+
+.folio-doc .pf-divider__label {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.folio-doc .pf-eyebrow {
+  display: block;
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.folio-doc .pf-hr,
+.folio-doc .pf-rule {
+  display: block;
+  border: none;
+  height: 1px;
+  background: var(--line);
+  margin: 0 0 18px;
+}
+
+.folio-doc .pf-rule-short {
+  display: block;
+  width: 54px;
+  height: 1px;
+  background: var(--accent);
+  margin: 0 0 16px;
+}
+
+.folio-doc .pf-sparkle {
+  color: var(--accent);
+}
+
+/* ---------- corner micro-type ---------- */
+
+.folio-doc .pf-corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.folio-doc .pf-corner {
+  position: absolute;
+  max-width: 40%;
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
+.folio-doc .pf-corner--topLeft {
+  top: var(--page-pad);
+  left: var(--page-pad);
+}
+
+.folio-doc .pf-corner--topRight {
+  top: var(--page-pad);
+  right: var(--page-pad);
+  text-align: right;
+}
+
+.folio-doc .pf-corner--bottomLeft {
+  bottom: var(--page-pad);
+  left: var(--page-pad);
+}
+
+.folio-doc .pf-corner--bottomRight {
+  bottom: var(--page-pad);
+  right: var(--page-pad);
+  text-align: right;
+}
+
+/* ---------- content ---------- */
+
+.folio-doc .pf-avatar {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--wall);
+  margin-bottom: 18px;
+}
+
+.folio-doc .pf-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.folio-doc .pf-statement {
+  max-width: 540px;
+  margin: 0 0 18px;
+}
+
+.folio-doc .pf-statement p {
+  line-height: 1.7;
+  color: var(--muted);
+  font-size: var(--body-size);
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.folio-doc .pf-contacts {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+}
+
+.folio-doc .pf-contacts a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.folio-doc .pf-contacts--center {
+  justify-content: center;
+}
+
+.folio-doc .pf-qr {
+  margin-top: 20px;
+}
+
+.folio-doc .pf-qr img {
+  width: 84px;
+  height: 84px;
+  image-rendering: pixelated;
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   COVERS
+   ========================================================================== */
+
+/* 1 — Minimalist */
+.folio-doc .pf-cover--minimalist {
+  min-height: 920px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.folio-doc .pf-hero {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.folio-doc .pf-hero--empty {
+  background: linear-gradient(150deg, var(--ink), var(--wall));
+}
+
+.folio-doc .pf-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.18) 42%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+}
+
+.folio-doc .pf-minimalist__center {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.folio-doc .pf-display {
+  font-family: var(--heading-font);
+  font-size: calc(var(--cover-size) * 2.7);
+  line-height: 0.88;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  text-transform: lowercase;
+  color: #fff;
+  margin: 0;
+}
+
+.folio-doc .pf-minimalist__sub {
+  position: relative;
+  z-index: 2;
+  margin-top: 20px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.folio-doc .pf-cover--minimalist .pf-corner {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.folio-doc .pf-qr--corner {
+  position: absolute;
+  right: var(--page-pad);
+  bottom: calc(var(--page-pad) + 26px);
+  z-index: 6;
+  margin: 0;
+}
+
+.folio-doc .pf-qr--corner img {
+  width: 62px;
+  height: 62px;
+  background: #fff;
+  padding: 4px;
+}
+
+/* 2 — Aesthetic */
+.folio-doc .pf-cover--aesthetic {
+  text-align: left;
+}
+
+.folio-doc .pf-aesthetic__image {
+  width: 100%;
+  height: 520px;
+  overflow: hidden;
+  background: var(--wall);
+}
+
+.folio-doc .pf-aesthetic__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.folio-doc .pf-aesthetic__title {
+  font-family: var(--heading-font);
+  font-size: calc(var(--cover-size) * 1.6);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 20px 0 4px;
+}
+
+.folio-doc .pf-aesthetic__sub {
+  font-size: 15px;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.folio-doc .pf-aesthetic__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+/* 3 — Simple Professional */
+.folio-doc .pf-cover--simple {
+  display: flex;
+  flex-direction: column;
+}
+
+.folio-doc .pf-simple__label {
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--ink);
+  margin-bottom: 30px;
+}
+
+.folio-doc .pf-simple__title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 0 24px;
+}
+
+.folio-doc .pf-simple__serif {
+  font-family: var(--heading-font);
+  font-style: italic;
+  font-weight: 500;
+  font-size: calc(var(--cover-size) * 2);
+  line-height: 1;
+}
+
+.folio-doc .pf-simple__sans {
+  font-family: var(--body-font);
+  font-weight: 600;
+  font-size: calc(var(--cover-size) * 1.75);
+  line-height: 1;
+}
+
+.folio-doc .pf-simple__rule {
+  width: 56px;
+  height: 2px;
+  background: var(--accent);
+  margin-bottom: 24px;
+}
+
+.folio-doc .pf-simple__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 34px;
+}
+
+/* 4 — Classic */
+.folio-doc .pf-cover--classic {
+  min-height: 900px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.folio-doc .pf-classic__title {
+  font-family: var(--heading-font);
+  font-style: italic;
+  font-weight: 500;
+  font-size: calc(var(--cover-size) * 2.7);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.folio-doc .pf-classic__sub {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  margin-top: 24px;
+}
+
+.folio-doc .pf-cover--classic .pf-contacts--center {
+  margin-top: 28px;
+}
+
+/* 5 — Vintage */
+.folio-doc .pf-cover--vintage {
+  text-align: center;
+}
+
+.folio-doc .pf-vintage__frame {
+  border: 2px solid var(--accent);
+  padding: 10px;
+}
+
+.folio-doc .pf-vintage__inner {
+  border: 1px solid var(--accent);
+  padding: 46px 26px;
+}
+
+.folio-doc .pf-vintage__eyebrow {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.folio-doc .pf-vintage__title {
+  font-family: var(--heading-font);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  font-size: calc(var(--cover-size) * 1.5);
+  margin: 14px 0;
+}
+
+.folio-doc .pf-vintage__flourish {
+  display: block;
+  color: var(--accent);
+  font-size: 20px;
+  margin: 4px 0 20px;
+}
+
+.folio-doc .pf-vintage__plaque {
+  display: inline-block;
+  border: 1px solid var(--accent);
+  padding: 9px 24px;
+  font-family: "Space Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+}
+
+.folio-doc .pf-vintage__tag {
+  font-style: italic;
+  color: var(--muted);
+  margin-top: 20px;
+}
+
+.folio-doc .pf-cover--vintage .pf-contacts--center {
+  margin-top: 26px;
+}
+
+/* 6 — Modern Creative */
+.folio-doc .pf-cover--modern {
+  display: flex;
+  flex-direction: column;
+}
+
+.folio-doc .pf-modern__head {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.folio-doc .pf-modern__name {
+  font-family: var(--heading-font);
+  font-size: calc(var(--cover-size) * 1.1);
+  letter-spacing: 0.04em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.folio-doc .pf-modern__tag {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+}
+
+.folio-doc .pf-modern__photo {
+  width: 100%;
+  height: 560px;
+  overflow: hidden;
+  background: var(--wall);
+}
+
+.folio-doc .pf-modern__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.folio-doc .pf-modern__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* 7 — Typographic */
+.folio-doc .pf-cover--typographic {
+  min-height: 900px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.055) 0 2px,
+    transparent 2px 46px
+  );
+}
+
+.folio-doc .pf-typo__lockup {
+  position: relative;
+  z-index: 2;
+}
+
+.folio-doc .pf-typo__serif {
+  font-family: var(--heading-font);
+  font-size: calc(var(--cover-size) * 3.1);
+  line-height: 0.88;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.folio-doc .pf-typo__script {
+  font-family: "Great Vibes", cursive;
+  font-size: calc(var(--cover-size) * 3.4);
+  line-height: 1;
+  margin-top: -0.32em;
+  padding-left: 22%;
+}
+
+.folio-doc .pf-typo__blurb {
+  position: relative;
+  z-index: 2;
+  max-width: 250px;
+  margin: 30px 0 0 auto;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.folio-doc .pf-sparkle--a {
+  position: absolute;
+  top: 22%;
+  right: 15%;
+  z-index: 2;
+}
+
+.folio-doc .pf-sparkle--b {
+  position: absolute;
+  top: 40%;
+  left: 13%;
+  z-index: 2;
+}
+
+.folio-doc .pf-contacts--bottom {
+  position: absolute;
+  left: var(--page-pad);
+  bottom: var(--page-pad);
+  z-index: 2;
+}
+
+/* 8 — Scrapbook / Collage */
+.folio-doc .pf-cover--collage {
+  text-align: center;
+}
+
+.folio-doc .pf-collage {
+  position: relative;
+  height: 340px;
+  margin: 12px 0 40px;
+}
+
+.folio-doc .pf-collage__tile {
+  position: absolute;
+  width: 212px;
+  height: 254px;
+  background: #fff;
+  padding: 8px 8px 28px;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.22);
+}
+
+.folio-doc .pf-collage__tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.folio-doc .pf-collage__tile--0 {
+  left: 4%;
+  top: 30px;
+  z-index: 1;
+}
+
+.folio-doc .pf-collage__tile--1 {
+  left: 50%;
+  margin-left: -106px;
+  top: 0;
+  z-index: 3;
+}
+
+.folio-doc .pf-collage__tile--2 {
+  right: 4%;
+  top: 24px;
+  z-index: 2;
+}
+
+.folio-doc .pf-collage__tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 76px;
+  height: 20px;
+  background: var(--accent-soft, var(--accent));
+}
+
+.folio-doc .pf-collage__tape--side {
+  left: auto;
+  right: -16px;
+  top: 30px;
+  transform: rotate(7deg);
+}
+
+.folio-doc .pf-collage__label {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 5px;
+  text-align: center;
+  font-family: "Caveat", cursive;
+  font-size: 15px;
+  color: #2b2b2b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folio-doc .pf-collage__name {
+  font-family: "Caveat", cursive;
+  font-size: calc(var(--cover-size) * 1.9);
+  font-weight: 600;
+  margin: 0;
+}
+
+.folio-doc .pf-collage__tag {
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* 9 — Bold Neon */
+.folio-doc .pf-cover--bold {
+  min-height: 920px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+}
+
+.folio-doc .pf-bold__nav {
+  position: absolute;
+  top: var(--page-pad);
+  left: var(--page-pad);
+  right: var(--page-pad);
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.folio-doc .pf-bold__nav-links {
+  display: flex;
+  gap: 22px;
+}
+
+.folio-doc .pf-bold__strip {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1.35fr 1fr;
+}
+
+.folio-doc .pf-bold__col {
+  overflow: hidden;
+}
+
+.folio-doc .pf-bold__col img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.folio-doc .pf-bold__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.3) 42%,
+    rgba(0, 0, 0, 0.86) 100%
+  );
+}
+
+.folio-doc .pf-bold__type {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding-bottom: 110px;
+}
+
+.folio-doc .pf-bold__big {
+  font-family: var(--heading-font);
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: calc(var(--cover-size) * 2.1);
+  letter-spacing: 0.02em;
+  line-height: 0.9;
+  margin: 0;
+  color: #fff;
+}
+
+.folio-doc .pf-bold__script {
+  font-family: "Great Vibes", cursive;
+  font-size: calc(var(--cover-size) * 2.5);
+  line-height: 1;
+  margin-top: -0.24em;
+  color: #fff;
+}
+
+.folio-doc .pf-bold__meta {
+  position: absolute;
+  left: var(--page-pad);
+  right: var(--page-pad);
+  bottom: var(--page-pad);
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.folio-doc .pf-cover--bold .pf-contacts {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.folio-doc .pf-cover--bold .pf-qr img {
+  background: #fff;
+  padding: 4px;
+}
+
+.folio-doc .pf-cover--bold .pf-sparkle {
+  position: absolute;
+  z-index: 4;
+}
+
+.folio-doc .pf-cover--bold .pf-sparkle--a {
+  top: 30%;
+  left: 21%;
+}
+
+.folio-doc .pf-cover--bold .pf-sparkle--b {
+  top: 52%;
+  right: 19%;
+}
+
+/* ==========================================================================
+   WORK LAYOUTS
+   ========================================================================== */
+
+.folio-doc .pf-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.folio-doc .pf-item {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.folio-doc .pf-frame {
+  width: 100%;
+  background: var(--wall);
+  border-radius: var(--frame-radius);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.folio-doc .pf-frame__img {
+  width: 100%;
+  height: 100%;
+}
+
+.folio-doc .pf-frame--wide {
+  border-radius: 0;
+}
+
+.folio-doc .pf-frame--bw {
+  filter: grayscale(1) contrast(1.05);
+}
+
+.folio-doc .pf-placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+/* Background-painted images (html2canvas-safe; no object-fit stretching). */
+.folio-doc .pf-img {
+  width: 100%;
+  height: 100%;
+}
+
+.folio-doc .pf-mount {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  padding: 16px;
+}
+
+.folio-doc .pf-caption {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.folio-doc .pf-secondary {
+  background: var(--wall);
+  border: 1px solid var(--line);
+  border-radius: var(--frame-radius);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.folio-doc .pf-secondary img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.folio-doc .pf-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.folio-doc .pf-plaque {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.folio-doc .pf-title {
+  font-family: var(--heading-font);
+  font-style: italic;
+  font-size: 17px;
+}
+
+.folio-doc .pf-status {
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.folio-doc .pf-status--sold,
+.folio-doc .pf-status--consignment {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.folio-doc .pf-status--nfs {
+  border: 1px solid var(--muted);
+  color: var(--muted);
+}
+
+.folio-doc .pf-status--exhibiting {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.folio-doc .pf-meta {
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-top: 5px;
+}
+
+.folio-doc .pf-series {
+  font-family: "Space Mono", monospace;
+  font-size: 9.5px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.folio-doc .pf-desc {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 10px 0 0;
+  max-width: 440px;
+}
+
+.folio-doc .pf-no {
+  font-family: "Space Mono", monospace;
+  font-size: 9.5px;
+  color: var(--muted);
+  opacity: 0.62;
+  margin-top: 10px;
+}
+
+.folio-doc .pf-extras {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.folio-doc .pf-extra {
+  width: 84px;
+  height: 84px;
+  background: var(--wall);
+  border: 1px solid var(--line);
+  border-radius: var(--frame-radius);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.folio-doc .pf-extra img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* airy caption bar */
+.folio-doc .pf-airy__bar {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+}
+
+.folio-doc .pf-airy__bar .pf-title {
+  flex: 1;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.folio-doc .pf-airy__desc {
+  margin-top: 2px;
+}
+
+/* ruled specification (editorial) */
+.folio-doc .pf-ruled {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.folio-doc .pf-ruled__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.folio-doc .pf-ruled__row--soft {
+  color: var(--muted);
+}
+
+.folio-doc .pf-ruled__desc {
+  margin-top: 12px;
+}
+
+/* plate (classic) */
+.folio-doc .pf-layout--plate .pf-item {
+  text-align: center;
+}
+
+.folio-doc .pf-plate {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  padding: 16px;
+}
+
+.folio-doc .pf-layout--plate .pf-details {
+  align-items: center;
+  text-align: center;
+}
+
+.folio-doc .pf-layout--plate .pf-plaque {
+  justify-content: center;
+}
+
+/* ornate (vintage) */
+.folio-doc .pf-ornate__frame {
+  border: 2px solid var(--accent);
+  padding: 10px;
+}
+
+.folio-doc .pf-ornate__frame .pf-frame {
+  border: 1px solid var(--accent);
+}
+
+/* columns (modern) */
+.folio-doc .pf-layout--columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.folio-doc .pf-layout--columns-single {
+  grid-template-columns: 1fr;
+}
+
+/* numbered (typographic) */
+.folio-doc .pf-layout--numbered {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+}
+
+.folio-doc .pf-number {
+  font-family: var(--heading-font);
+  font-size: 46px;
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+/* masonry (scrapbook) */
+.folio-doc .pf-layout--masonry {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.folio-doc .pf-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.folio-doc .pf-item--big > .pf-frame,
+.folio-doc .pf-item--big > .pf-frame {
+  transform: rotate(-1deg);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+}
+
+.folio-doc .pf-item--small > .pf-frame {
+  transform: rotate(1.5deg);
+  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.16);
+}
+
+.folio-doc .pf-item--small .pf-small-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 9px;
+}
+
+.folio-doc .pf-tape {
+  display: block;
+  width: 58px;
+  height: 16px;
+  background: var(--accent-soft, var(--accent));
+  transform: rotate(-4deg);
+  margin: 0 auto -10px;
+}
+
+/* full-bleed (bold) */
+.folio-doc .pf-fullbleed {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.folio-doc .pf-fullbleed__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.folio-doc .pf-fullbleed__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 42%,
+    rgba(0, 0, 0, 0.82) 100%
+  );
+}
+
+.folio-doc .pf-fullbleed__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 26px;
+  color: #fff;
+}
+
+.folio-doc .pf-fullbleed__caption .pf-title {
+  color: #fff;
+}
+
+.folio-doc .pf-fullbleed__caption .pf-meta,
+.folio-doc .pf-fullbleed__caption .pf-desc,
+.folio-doc .pf-fullbleed__caption .pf-no {
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.folio-doc .pf-fullbleed__caption .pf-series {
+  color: var(--accent);
+}
+
+.folio-doc .pf-fullbleed__caption .pf-desc {
+  max-width: 520px;
+}
+
+/* ==========================================================================
+   TOC + CV
+   ========================================================================== */
+
+.folio-doc .pf-toc__section {
+  margin-bottom: 22px;
+}
+
+.folio-doc .pf-toc__heading {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.folio-doc .pf-toc__row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.folio-doc .pf-toc__no {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.folio-doc .pf-toc__title {
+  font-family: var(--heading-font);
+  font-style: italic;
+  font-size: 14px;
+  flex: 1;
+}
+
+.folio-doc .pf-toc__meta {
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.folio-doc .pf-toc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.folio-doc .pf-toc-card__thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--wall);
+  border-radius: var(--frame-radius);
+  overflow: hidden;
+}
+
+.folio-doc .pf-toc-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.folio-doc .pf-toc-card__no {
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 7px;
+}
+
+.folio-doc .pf-toc-card__title {
+  font-family: var(--heading-font);
+  font-style: italic;
+  font-size: 13px;
+}
+
+.folio-doc .pf-index-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.folio-doc .pf-index-no {
+  font-family: var(--heading-font);
+  font-size: 26px;
+  color: var(--accent);
+  width: 66px;
+  flex-shrink: 0;
+}
+
+.folio-doc .pf-index-title {
+  font-family: var(--heading-font);
+  font-style: italic;
+  font-size: 16px;
+  flex: 1;
+}
+
+.folio-doc .pf-index-meta {
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.folio-doc .pf-cv__section {
+  margin-bottom: 26px;
+}
+
+.folio-doc .pf-cv__heading {
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.folio-doc .pf-cv__row {
+  display: flex;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.folio-doc .pf-cv__year {
+  font-family: "Space Mono", monospace;
+  width: 58px;
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.folio-doc .pf-cv__title {
+  font-family: var(--heading-font);
+  font-style: italic;
+  font-size: 15px;
+}
+
+.folio-doc .pf-cv__sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.folio-doc .pf-cv__badge {
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1px 6px;
+  margin-left: 6px;
+}
+
+.folio-doc .pf-cv--cols {
+  column-count: 2;
+  column-gap: 36px;
+}
+
+.folio-doc .pf-cv--cols .pf-cv__section {
+  break-inside: avoid;
+}
+
+/* ---------- biography page ---------- */
+
+.folio-doc .pf-biopage {
+  min-height: 55%;
+}
+
+.folio-doc .pf-bio {
+  max-width: 620px;
+}
+
+.folio-doc .pf-bio__block + .pf-bio__block {
+  margin-top: 28px;
+}
+
+.folio-doc .pf-bio__eyebrow {
+  display: block;
+  font-family: "Space Mono", monospace;
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+
+.folio-doc .pf-bio__text {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--muted);
+  white-space: pre-wrap;
+  margin: 0;
+  max-width: 460px;
+}
+
+/* ---------- preview-only link ---------- */
+
+.folio-doc .pf-back {
+  display: inline-block;
+  margin-top: 20px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.folio-doc .pf-back:hover {
+  color: var(--accent);
+}
+
+/* ---------- PDF pagination ---------- */
+
+.folio-doc--pdf .pf-page {
+  max-width: none;
+  width: 100%;
+  min-height: var(--pdf-page-h, 1078px);
+  page-break-after: always;
+  break-after: page;
+}
+
+/* Full-height covers / bleed pages so each maps to exactly one PDF page. */
+.folio-doc--pdf .pf-cover--minimalist,
+.folio-doc--pdf .pf-cover--classic,
+.folio-doc--pdf .pf-cover--bold,
+.folio-doc--pdf .pf-cover--typographic {
+  min-height: calc(var(--pdf-page-h, 1078px) - 2 * var(--page-pad, 48px));
+}
+
+.folio-doc--pdf .tm-bold .pf-cover--bold,
+.folio-doc--pdf .tm-bold .pf-fullbleed {
+  min-height: var(--pdf-page-h, 1078px);
+}
+
+.folio-doc--pdf .pf-page:last-child {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+.folio-doc--pdf .pf-item {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.folio-doc--pdf .pf-back {
+  display: none;
+}
+
+/* ---------- mini preview ---------- */
+
+.mini-doc .pf-page {
+  max-width: none;
+}
+
+/* ---------- biography — per-template character ---------- */
+
+.tm-minimalist .pf-bio,
+.tm-aesthetic .pf-bio,
+.tm-classic .pf-bio,
+.tm-vintage .pf-bio {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.tm-minimalist .pf-bio__text,
+.tm-aesthetic .pf-bio__text,
+.tm-classic .pf-bio__text,
+.tm-vintage .pf-bio__text {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tm-minimalist .pf-bio__eyebrow::after,
+.tm-classic .pf-bio__eyebrow::after {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 1px;
+  background: var(--accent);
+  margin: 10px auto 0;
+}
+
+.tm-vintage .pf-bio__eyebrow {
+  font-variant: small-caps;
+  text-transform: none;
+  letter-spacing: 0.08em;
+}
+.tm-vintage .pf-bio__text::first-letter {
+  font-family: var(--heading-font);
+  font-size: 2.6em;
+  float: left;
+  line-height: 0.8;
+  padding: 4px 8px 0 0;
+  color: var(--accent);
+}
+
+.tm-modern .pf-bio__eyebrow {
+  color: var(--ink);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 6px;
+}
+
+.tm-scrapbook .pf-bio__block {
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.14);
+  padding: 22px 24px;
+  transform: rotate(-1deg);
+}
+.tm-scrapbook .pf-bio__block + .pf-bio__block {
+  transform: rotate(1.2deg);
+}
+.tm-scrapbook .pf-bio__eyebrow {
+  font-family: "Caveat", cursive;
+  font-size: 20px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.tm-scrapbook .pf-bio__text {
+  color: #2c2115;
+}

@@ -1,0 +1,9 @@
+{
+  "appId": "studio.folio.app",
+  "appName": "Folio",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}
