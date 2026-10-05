@@ -41,7 +41,6 @@ jobs:
       - name: Generate launcher icon + splash
         run: npx capacitor-assets generate --android
 
-      # ---------------- Debug builds ----------------
       - name: Build debug APK and AAB
         working-directory: android
         run: |
@@ -60,23 +59,29 @@ jobs:
           name: folio-debug-aab
           path: android/app/build/outputs/bundle/debug/*.aab
 
-      # ---------------- Signed release builds ----------------
-      - name: Write release keystore
+      - name: Check for signing secret
+        id: keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
         run: |
-          if [ -z "$KEYSTORE_BASE64" ]; then
-            echo "ANDROID_KEYSTORE_BASE64 secret not set — skipping release build."
-            exit 0
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
           fi
-          echo "$KEYSTORE_BASE64" | base64 -d > android/app/folio-release.keystore
+
+      - name: Write release keystore
+        if: steps.keystore.outputs.present == 'true'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: echo "$KEYSTORE_BASE64" | base64 -d > android/app/folio-release.keystore
 
       - name: Add signing config + version
-        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        if: steps.keystore.outputs.present == 'true'
         run: node scripts/patch-android-signing.mjs
 
       - name: Build signed release APK and AAB
-        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        if: steps.keystore.outputs.present == 'true'
         working-directory: android
         env:
           FOLIO_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -87,14 +92,14 @@ jobs:
           ./gradlew assembleRelease bundleRelease
 
       - name: Upload release APK
-        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        if: steps.keystore.outputs.present == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: folio-release-apk
           path: android/app/build/outputs/apk/release/*.apk
 
       - name: Upload release AAB
-        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        if: steps.keystore.outputs.present == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: folio-release-aab
